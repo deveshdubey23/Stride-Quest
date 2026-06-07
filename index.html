@@ -1,0 +1,1431 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier; -webkit-text-stroke: #000000; min-height: 16.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="en" class="h-full bg-slate-950 text-slate-100"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;StrideQuest // Real-Time Footstep Leaderboard&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Tailwind CSS --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Google Fonts: Inter &amp; JetBrains Mono --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Chart.js for beautiful analytical graphs --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Lucide Icons CDN --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/lucide@latest"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Canvas Confetti for celebrations --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"&gt;&lt;/script&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>tailwind.config = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>theme: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>extend: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>fontFamily: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>sans: ['Inter', 'sans-serif'],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>mono: ['JetBrains Mono', 'monospace'],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>colors: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>brand: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>50: '#f0f9ff',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>100: '#e0f2fe',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>400: '#38bdf8',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>500: '#0ea5e9',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>600: '#0284c7',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>950: '#030712',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>boxShadow: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>'glow-sm': '0 0 10px rgba(56, 189, 248, 0.15)',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>'glow': '0 0 20px rgba(56, 189, 248, 0.25)',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>'glow-lg': '0 0 35px rgba(56, 189, 248, 0.4)',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* Custom scrollbars to keep layout clean and futuristic */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 6px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 6px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-track {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #030712;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-thumb {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #1e293b;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 3px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-thumb:hover {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #38bdf8;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.glow-border:hover {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-color: rgba(56, 189, 248, 0.5);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body class="font-sans antialiased min-h-full flex flex-col justify-between selection:bg-sky-500 selection:text-black"&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Loading Screen Overlay --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="loading-overlay" class="fixed inset-0 z-50 bg-slate-950 flex flex-col items-center justify-center transition-opacity duration-500"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="relative flex flex-col items-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="w-16 h-16 rounded-full border-4 border-slate-800 border-t-sky-500 animate-spin mb-4"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-sky-500 to-cyan-400 flex items-center justify-center shadow-glow absolute top-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;i data-lucide="footprints" class="w-6 h-6 text-slate-950 stroke-[2.5]"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-xl font-bold tracking-tight text-white mt-4"&gt;Connecting StrideQuest...&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p class="text-xs text-sky-400/80 uppercase tracking-widest mt-1"&gt;Establishing Real-time Cloud Link&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Top Nav / Header --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;header class="border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40 transition-all"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="flex items-center justify-between h-16 sm:h-20"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Logo brand section --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center space-x-3 group"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-cyan-400 flex items-center justify-center shadow-glow shadow-sky-500/20 transform transition-transform group-hover:scale-110"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="footprints" class="w-6 h-6 text-slate-950 stroke-[2.5]"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;h1 class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>STRIDE&lt;span class="text-sky-400 bg-sky-950/80 px-2 py-0.5 rounded-md border border-sky-800/50 text-xs tracking-wider"&gt;QUEST&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold"&gt;Live Company Challenge&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Live Status &amp; Countdown Badge --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="hidden md:flex items-center space-x-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex items-center space-x-2 bg-emerald-950/30 border border-emerald-900/50 px-3 py-1.5 rounded-lg text-xs"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="relative flex h-2 w-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"&gt;&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"&gt;&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="text-emerald-400 font-semibold uppercase tracking-wider text-[10px]"&gt;Cloud Sync Connected&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex items-center space-x-2 bg-slate-900/60 border border-slate-800 px-3 py-1.5 rounded-lg text-xs"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="text-slate-400"&gt;Target Month:&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="text-sky-400 font-bold" id="current-month-display"&gt;June 2026&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex items-center space-x-2 bg-slate-900/60 border border-slate-800 px-3 py-1.5 rounded-lg text-xs"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="clock" class="w-4 h-4 text-sky-400"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="text-slate-400"&gt;Days Left:&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="text-white font-bold" id="days-remaining-display"&gt;--&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Log Steps &amp; Share Controls --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center space-x-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;button onclick="shareDashboardLink()" class="p-2 sm:p-2.5 text-slate-400 hover:text-sky-400 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-xl transition-all flex items-center gap-1.5 text-xs font-semibold" title="Copy Invite Link to Clipboard"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="share-2" class="w-4 h-4"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="hidden lg:inline"&gt;Invite Team&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;button onclick="openLogModal()" class="flex items-center space-x-2 bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-400 text-slate-950 font-bold px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl shadow-glow shadow-sky-500/10 hover:shadow-sky-400/20 transform hover:-translate-y-0.5 transition-all active:translate-y-0 text-xs sm:text-sm"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="plus-circle" class="w-4 h-4 stroke-[2.5]"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span&gt;Log My Steps&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;button onclick="openAddEmployeeModal()" class="p-2 sm:p-2.5 text-slate-400 hover:text-sky-400 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-xl transition-all" title="Add New Employee"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="user-plus" class="w-4 h-4 sm:w-5 sm:h-5"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Custom Toast Notification Box --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="toast-notification" class="fixed top-24 right-4 z-50 transform translate-x-96 transition-all duration-300 pointer-events-none"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="bg-slate-900 border border-sky-500/30 rounded-xl p-4 shadow-lg flex items-center gap-3 max-w-sm"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="w-8 h-8 rounded-lg bg-sky-950 flex items-center justify-center text-sky-400"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;i data-lucide="check-circle-2" class="w-5 h-5"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4 class="text-xs font-bold text-white uppercase tracking-wider" id="toast-title"&gt;Success&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p class="text-xs text-slate-400" id="toast-message"&gt;Leaderboard updated live!&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Main Dashboard Body --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 flex-grow w-full"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- Interactive Welcome Panel --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="mb-8 p-6 rounded-2xl bg-gradient-to-r from-slate-900/90 via-slate-950 to-sky-950/20 border border-slate-800 relative overflow-hidden"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Background glows --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="absolute top-0 right-1/4 w-72 h-72 bg-sky-500/5 rounded-full blur-[100px] pointer-events-none"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="absolute -bottom-10 left-10 w-48 h-48 bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none"&gt;&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-sky-500/10 text-sky-400 border border-sky-500/20 mb-3"&gt;WORKSPACE COMPETITION LINK LIVE&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight"&gt;One Link. One Team. Shared Journeys.&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="text-slate-400 text-sm mt-1 max-w-2xl"&gt;Send this dashboard link to everyone in your company. Team members can instantly register themselves, log steps daily, and track live updates as they rise on the company leaderboard!&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center gap-3 self-start md:self-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="text-right"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="text-xs text-slate-400 block uppercase tracking-wider"&gt;Company Target&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="text-lg font-mono font-bold text-sky-400 animate-pulse" id="total-goal-display"&gt;750k Steps Target&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="w-12 h-12 rounded-full border-2 border-sky-500/20 flex items-center justify-center bg-sky-950/40" id="goal-dial"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="target" class="w-6 h-6 text-sky-400 animate-bounce"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- 4 Column Stats Cards --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- STAT 1: TOTAL MONTHLY STEPS --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 relative overflow-hidden transition-all hover:bg-slate-900 hover:border-slate-700/80 shadow-glow-sm"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center justify-between mb-3"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-xs font-bold text-slate-400 uppercase tracking-widest"&gt;Total Footsteps&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="p-2 bg-sky-950/60 text-sky-400 border border-sky-800/30 rounded-lg"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="bar-chart-2" class="w-4 h-4"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex flex-col"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-2xl sm:text-3xl font-mono font-extrabold text-white tracking-tight" id="stat-total-steps"&gt;0&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-xs text-sky-400 mt-1 flex items-center gap-1"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="trending-up" class="w-3.5 h-3.5"&gt;&lt;/i&gt; Shared Collective Company Journey</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- STAT 2: CURRENT LEADER --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 relative overflow-hidden transition-all hover:bg-slate-900 hover:border-slate-700/80 shadow-glow-sm"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center justify-between mb-3"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-xs font-bold text-slate-400 uppercase tracking-widest"&gt;Current Leader&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="p-2 bg-sky-950/60 text-sky-400 border border-sky-800/30 rounded-lg"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="crown" class="w-4 h-4"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex flex-col"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-xl sm:text-2xl font-extrabold text-white tracking-tight truncate" id="stat-leader-name"&gt;--&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-xs text-slate-400 mt-1.5 flex items-center gap-1.5"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="font-mono text-sky-400 font-bold" id="stat-leader-steps"&gt;0&lt;/span&gt; steps logged</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- STAT 3: AVERAGE STEPS PER RECORD --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 relative overflow-hidden transition-all hover:bg-slate-900 hover:border-slate-700/80 shadow-glow-sm"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center justify-between mb-3"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-xs font-bold text-slate-400 uppercase tracking-widest"&gt;Avg Daily Log&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="p-2 bg-sky-950/60 text-sky-400 border border-sky-800/30 rounded-lg"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="zap" class="w-4 h-4"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex flex-col"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-2xl sm:text-3xl font-mono font-extrabold text-white tracking-tight" id="stat-average-steps"&gt;0&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-xs text-slate-400 mt-1 flex items-center gap-1"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="text-emerald-400 font-semibold" id="avg-percentage-text"&gt;Highly active community&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- STAT 4: PARTICIPATION RATE --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 relative overflow-hidden transition-all hover:bg-slate-900 hover:border-slate-700/80 shadow-glow-sm"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center justify-between mb-3"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-xs font-bold text-slate-400 uppercase tracking-widest"&gt;Active Walkers&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="p-2 bg-sky-950/60 text-sky-400 border border-sky-800/30 rounded-lg"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="users" class="w-4 h-4"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex flex-col"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-2xl sm:text-3xl font-mono font-extrabold text-white tracking-tight" id="stat-active-rate"&gt;0 / 0&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-xs text-slate-400 mt-1 flex items-center gap-1.5"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"&gt;&lt;/span&gt; Registered team members</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- Content Split: Graphs &amp; Leaderboard --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- LEFT SECTION: Graphs &amp; Logs Feed (7 columns) --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="lg:col-span-7 space-y-8"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Analytics Card --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-slate-900/50 backdrop-blur border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-xl relative"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-lg font-bold text-white flex items-center gap-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;i data-lucide="activity" class="w-5 h-5 text-sky-400"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>Live Team Progress Analytics</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-xs text-slate-400"&gt;Review real-time collective daily metrics and contributions&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;button onclick="toggleChartType('trend')" id="btn-chart-trend" class="px-3 py-1.5 rounded-lg font-medium text-slate-300 hover:text-white transition-all bg-sky-500 text-slate-950 shadow-sm font-semibold"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>Daily Trend</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;button onclick="toggleChartType('dept')" id="btn-chart-dept" class="px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-white transition-all"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>Departments</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;!-- Chart Containers --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="relative h-64 sm:h-72 w-full"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;canvas id="strideAnalyticsChart"&gt;&lt;/canvas&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Recent Footstep Logs Feed --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-slate-900/50 backdrop-blur border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-xl"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex items-center justify-between mb-5"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-lg font-bold text-white flex items-center gap-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;i data-lucide="history" class="w-5 h-5 text-sky-400"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>Real-Time Activity Stream</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-xs text-slate-400"&gt;Live submissions updating across all connected browsers&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="text-xs font-mono bg-slate-950 px-2.5 py-1 border border-slate-800 rounded-md text-slate-400" id="total-logs-count"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>0 Logs</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;!-- Logs List --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="max-h-[340px] overflow-y-auto space-y-3.5 pr-1.5" id="recent-logs-list"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;!-- Populated dynamically --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- RIGHT SECTION: Leaderboard and Podium (5 columns) --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="lg:col-span-5 space-y-8"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-slate-900/50 backdrop-blur border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-xl relative shadow-glow-sm"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;!-- Title Header &amp; Search Filter Controls --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex flex-col gap-4 mb-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-extrabold text-white tracking-tight flex items-center gap-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;i data-lucide="award" class="w-5 h-5 text-sky-400"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>Live Leaderboard</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-xs text-slate-400"&gt;Real-time workspace ranks based on total monthly steps&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;!-- Filters --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="flex flex-col sm:flex-row gap-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;!-- Search --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="relative flex-1"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;i data-lucide="search" class="w-4 h-4 text-slate-500"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;input type="text" id="leaderboard-search" oninput="renderLeaderboard()" placeholder="Search team member..." class="w-full pl-9 pr-3 py-2 text-xs bg-slate-950 border border-slate-800 rounded-xl focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none text-white transition-all placeholder-slate-500"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;!-- Dropdown Dept --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;select id="leaderboard-dept-filter" onchange="renderLeaderboard()" class="px-3 py-2 text-xs bg-slate-950 border border-slate-800 rounded-xl focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none text-slate-300 transition-all cursor-pointer"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;option value="All"&gt;All Departments&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;option value="Engineering"&gt;Engineering&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;option value="Design"&gt;Design&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;option value="Product"&gt;Product&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;option value="Marketing"&gt;Marketing&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;option value="Sales"&gt;Sales&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;option value="HR"&gt;HR&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;option value="Finance"&gt;Finance&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;!-- Podium Highlights Section (Top 3) --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="mb-6" id="podium-section"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;!-- Populated dynamically with beautiful visual podium --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;!-- Divider --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="h-[1px] bg-slate-800/60 my-5"&gt;&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;!-- Leaderboard Rows Scroll Container --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="space-y-2.5 max-h-[460px] overflow-y-auto pr-1" id="leaderboard-list"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;!-- Dynamic list items from JS --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- FOOTER --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;footer class="border-t border-slate-900 bg-black py-6 mt-12 text-xs text-slate-500"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="flex items-center space-x-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;i data-lucide="footprints" class="w-4 h-4 text-sky-500"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span class="font-bold text-slate-400"&gt;StrideQuest Cloud Challenge © 2026&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p&gt;Ready to deploy. Share the link with your company to start tracking live!&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/footer&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- MODAL 1: LOG DAILY FOOTSTEPS --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="logModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="bg-slate-950 border border-slate-800 rounded-2xl w-full max-w-md p-6 relative overflow-hidden shadow-glow"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Header --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="flex justify-between items-start mb-5"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-lg font-bold text-white flex items-center gap-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="edit-3" class="w-5 h-5 text-sky-400"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>Log Your Footsteps</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="text-xs text-slate-400"&gt;Select your name and input logged footsteps&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button onclick="closeLogModal()" class="text-slate-500 hover:text-white transition-all bg-slate-900 border border-slate-800 p-1.5 rounded-lg"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;i data-lucide="x" class="w-4 h-4"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Form --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;form onsubmit="submitFootstepLog(event)" class="space-y-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Employee Field --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5"&gt;Select Your Name *&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;select id="log-employee-id" required class="w-full px-3 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-white outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all cursor-pointer"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;!-- Dynamic select values of employees --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Twin Fields Grid: Steps &amp; Date --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="grid grid-cols-2 gap-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5"&gt;Date *&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input type="date" id="log-date" required class="w-full px-3 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-white outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all font-mono text-sm"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5"&gt;Steps Count *&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input type="number" id="log-steps" required min="1" max="100000" placeholder="e.g. 10250" class="w-full px-3 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-white outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all font-mono text-sm"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Quick Addition Suggestions --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="block text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-1.5"&gt;Quick Steps Templates&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="grid grid-cols-3 gap-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;button type="button" onclick="setQuickSteps(6000)" class="py-1.5 bg-slate-900 hover:bg-slate-850 hover:border-sky-500 border border-slate-800 rounded-lg text-xs font-mono font-medium text-sky-400 transition-all"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>6K Steps</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;button type="button" onclick="setQuickSteps(10000)" class="py-1.5 bg-slate-900 hover:bg-slate-850 hover:border-sky-500 border border-slate-800 rounded-lg text-xs font-mono font-medium text-sky-400 transition-all"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>10K Steps</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;button type="button" onclick="setQuickSteps(15000)" class="py-1.5 bg-slate-900 hover:bg-slate-850 hover:border-sky-500 border border-slate-800 rounded-lg text-xs font-mono font-medium text-sky-400 transition-all"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>15K Steps</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Submit Button --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="pt-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;button id="btn-submit-log" type="submit" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-3 px-4 rounded-xl shadow-glow shadow-sky-500/10 hover:shadow-sky-400/20 transition-all flex items-center justify-center gap-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="check" class="w-5 h-5 stroke-[2.5]"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span&gt;Register Steps Live&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/form&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- MODAL 2: ADD NEW EMPLOYEE --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="addEmployeeModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="bg-slate-950 border border-slate-800 rounded-2xl w-full max-w-sm p-6 relative overflow-hidden shadow-glow"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Header --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="flex justify-between items-start mb-5"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-lg font-bold text-white flex items-center gap-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="user-plus" class="w-5 h-5 text-sky-400"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>Add Team Member</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="text-xs text-slate-400"&gt;Register in the shared company challenge&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button onclick="closeAddEmployeeModal()" class="text-slate-500 hover:text-white transition-all bg-slate-900 border border-slate-800 p-1.5 rounded-lg"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;i data-lucide="x" class="w-4 h-4"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Form --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;form onsubmit="submitNewEmployee(event)" class="space-y-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5"&gt;Full Name *&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="new-emp-name" required placeholder="e.g. Rachel Adams" class="w-full px-3 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-white outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5"&gt;Department *&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;select id="new-emp-dept" required class="w-full px-3 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-white outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all cursor-pointer"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;option value="Engineering"&gt;Engineering&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;option value="Design"&gt;Design&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;option value="Product"&gt;Product&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;option value="Marketing"&gt;Marketing&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;option value="Sales"&gt;Sales&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;option value="HR"&gt;HR&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;option value="Finance"&gt;Finance&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="pt-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;button id="btn-submit-emp" type="submit" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-3 px-4 rounded-xl shadow-glow shadow-sky-500/10 hover:shadow-sky-400/20 transition-all flex items-center justify-center gap-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;i data-lucide="user-check" class="w-5 h-5"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span&gt;Register Live&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/form&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- MODAL 3: INDIVIDUAL EMPLOYEE HISTORY PROFILE DETAILS --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="profileModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="bg-slate-950 border border-slate-800 rounded-2xl w-full max-w-lg p-6 relative overflow-hidden shadow-glow"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Header --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="flex justify-between items-start mb-5"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center gap-3"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div id="profile-avatar-badge" class="w-12 h-12 rounded-xl bg-sky-950/80 border-2 border-sky-500 flex items-center justify-center text-sky-400 font-extrabold text-lg shadow-glow shadow-sky-500/10"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>AA</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;h3 id="profile-name" class="text-xl font-extrabold text-white"&gt;Employee Profile&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span id="profile-dept" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-sky-950 text-sky-400 border border-sky-800/50 uppercase tracking-widest mt-0.5 inline-block"&gt;Department&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button onclick="closeProfileModal()" class="text-slate-500 hover:text-white transition-all bg-slate-900 border border-slate-800 p-1.5 rounded-lg"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;i data-lucide="x" class="w-4 h-4"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Profile Summary stats grids --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="grid grid-cols-3 gap-3 mb-6 bg-slate-900/60 p-4 rounded-xl border border-slate-800"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="text-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="block text-[10px] text-slate-400 uppercase tracking-wider mb-0.5"&gt;Total Steps&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span id="profile-stat-total" class="font-mono text-base sm:text-lg font-bold text-white"&gt;0&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="text-center border-x border-slate-800"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="block text-[10px] text-slate-400 uppercase tracking-wider mb-0.5"&gt;Days Logged&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span id="profile-stat-days" class="font-mono text-base sm:text-lg font-bold text-sky-400"&gt;0&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="text-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="block text-[10px] text-slate-400 uppercase tracking-wider mb-0.5"&gt;Avg Steps/Day&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span id="profile-stat-avg" class="font-mono text-base sm:text-lg font-bold text-emerald-400"&gt;0&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Logs Calendar/List --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;i data-lucide="list-filter" class="w-4 h-4 text-sky-400"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>All Logs Submitted This Month</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="max-h-52 overflow-y-auto space-y-2 pr-1" id="profile-logs-list"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;!-- Logs mapped here dynamically --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Admin Action Section for Removal --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="mt-6 pt-4 border-t border-slate-900 flex justify-end"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button id="btn-delete-employee" class="px-4 py-2 bg-red-950/40 hover:bg-red-900/60 text-red-400 hover:text-red-200 border border-red-900/40 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;i data-lucide="user-x" class="w-4 h-4"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span&gt;Remove Employee from Challenge&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- CUSTOM CONFIRMATION MODAL (To avoid browser alerts/confirms) --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="confirmModal" class="fixed inset-0 z-[60] hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="bg-slate-950 border border-slate-800 rounded-2xl w-full max-w-sm p-6 relative overflow-hidden shadow-glow"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="flex flex-col items-center text-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="w-12 h-12 rounded-xl bg-red-950 border border-red-500/30 flex items-center justify-center text-red-400 mb-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;i data-lucide="alert-triangle" class="w-6 h-6"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h3 class="text-lg font-bold text-white mb-2" id="confirm-title"&gt;Are you sure?&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p class="text-xs text-slate-400 mb-6" id="confirm-message"&gt;This action will delete this entry permanently from the shared database.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex gap-3 w-full"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;button id="btn-confirm-cancel" class="flex-1 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 font-semibold text-xs hover:bg-slate-850 transition-all"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>Cancel</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;button id="btn-confirm-action" class="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-slate-950 font-bold text-xs shadow-md transition-all"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>Delete</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- REAL-TIME CLOUD MODULE SCRIPT --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script type="module"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>import { getFirestore, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot, collection, query, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Global State variables</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const CURRENT_DATE_CONTEXT = new Date("2026-06-08T12:00:00");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const TOTAL_DAYS_IN_JUNE = 30;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let appState = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>employees: [],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>logs: [],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>currentChartType: 'trend',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>chartInstance: null</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Initialize Firebase with auto-injection variables</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const appId = typeof __app_id !== 'undefined' ? __app_id : 'stridequest-challenge';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const rawConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let firebaseConfig;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>firebaseConfig = JSON.parse(rawConfig);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>} catch (e) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>firebaseConfig = {};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Fallback Firebase configuration if none is passed</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (!firebaseConfig.apiKey) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>firebaseConfig = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>apiKey: "mock-api-key-stridequest",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>authDomain: "stridequest.firebaseapp.com",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>projectId: "stridequest",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>storageBucket: "stridequest.appspot.com",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>messagingSenderId: "12345",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appId: "1:12345:web:123"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const app = initializeApp(firebaseConfig);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const db = getFirestore(app);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const auth = getAuth(app);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Path configurations matching Strict Rules</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const employeesCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'employees');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const logsCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'logs');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Authenticate Client securely</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>async function authenticateUser() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (typeof __initial_auth_token !== 'undefined' &amp;&amp; __initial_auth_token) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>await signInWithCustomToken(auth, __initial_auth_token);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>await signInAnonymously(auth);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch (err) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>console.warn("Failed custom/anonymous login, operating in local sandboxed environment", err);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Seeding database with original profiles if it's completely fresh</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>async function seedDatabaseIfEmpty() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Disabled auto-seeding to keep the workspace completely clean for the CEO's active live initiative.</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Setup real-time listeners for instant cross-device updates</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function listenToRealTimeDatabase() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let employeesLoaded = false;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let logsLoaded = false;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>function checkLoaded() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (employeesLoaded &amp;&amp; logsLoaded) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const overlay = document.getElementById('loading-overlay');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (overlay) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>overlay.classList.add('opacity-0');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>setTimeout(() =&gt; overlay.classList.add('hidden'), 500);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Listen to employee roster updates</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>onSnapshot(employeesCollectionRef, (snapshot) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const updatedEmployees = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>snapshot.forEach(doc =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>updatedEmployees.push({</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>id: doc.id,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>...doc.data()</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appState.employees = updatedEmployees;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>employeesLoaded = true;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>updateTopDisplayInfo();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>populateEmployeeDropdowns();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>renderDashboard();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>checkLoaded();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}, (error) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>console.error("Employees subscription failed:", error);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Listen to daily step logs updates</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>onSnapshot(logsCollectionRef, (snapshot) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const updatedLogs = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>snapshot.forEach(doc =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>updatedLogs.push({</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>id: doc.id,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>...doc.data()</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Sort logs with newest first</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appState.logs = updatedLogs.sort((a, b) =&gt; b.date.localeCompare(a.date));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>logsLoaded = true;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>renderDashboard();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>checkLoaded();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}, (error) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>console.error("Logs subscription failed:", error);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Feedback generation (Web Audio synthesis)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function playSuccessSound() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const audioCtx = new (window.AudioContext || window.webkitAudioContext)();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const osc1 = audioCtx.createOscillator();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const gain = audioCtx.createGain();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>osc1.connect(gain);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>gain.connect(audioCtx.destination);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>osc1.type = 'sine';</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>osc1.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>osc1.frequency.setValueAtTime(880.00, audioCtx.currentTime + 0.08); // A5</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>gain.gain.setValueAtTime(0.08, audioCtx.currentTime);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>osc1.start();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>osc1.stop(audioCtx.currentTime + 0.25);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch (e) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Audio safely fails on systems restricting initial media clicks</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Visual milestone animation</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function triggerConfettiBurst() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>confetti({</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>particleCount: 110,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>spread: 70,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>origin: { y: 0.85 },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>colors: ['#38bdf8', '#0ea5e9', '#0284c7', '#ffffff']</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch(e) {}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Visual custom toast launcher</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function showToast(title, message) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const toast = document.getElementById('toast-notification');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('toast-title').innerText = title;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('toast-message').innerText = message;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>toast.classList.remove('translate-x-96');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>setTimeout(() =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>toast.classList.add('translate-x-96');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}, 3500);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Share App URL Utility</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.shareDashboardLink = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const shareUrl = window.location.href;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Use execCommand copy compatibility fallback</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const tempInput = document.createElement("input");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.body.appendChild(tempInput);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>tempInput.value = shareUrl;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>tempInput.select();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.execCommand("copy");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.body.removeChild(tempInput);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>playSuccessSound();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>triggerConfettiBurst();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>showToast("Link Copied!", "Share this link with your team to log their footsteps live!");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch (e) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>console.error("Could not copy link automatically", e);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Dynamic custom confirm modal helper to avoid standard alerts/confirms</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function openConfirmDialog(title, message, onConfirm) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const confirmModal = document.getElementById('confirmModal');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('confirm-title').innerText = title;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('confirm-message').innerText = message;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>confirmModal.classList.remove('hidden');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const confirmBtn = document.getElementById('btn-confirm-action');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const cancelBtn = document.getElementById('btn-confirm-cancel');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Reset event listeners</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const newConfirmBtn = confirmBtn.cloneNode(true);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const newCancelBtn = cancelBtn.cloneNode(true);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>newConfirmBtn.addEventListener('click', () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>onConfirm();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>confirmModal.classList.add('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>newCancelBtn.addEventListener('click', () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>confirmModal.classList.add('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Populate selects</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function populateEmployeeDropdowns() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const select = document.getElementById('log-employee-id');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const sorted = [...appState.employees].sort((a, b) =&gt; a.name.localeCompare(b.name));</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (sorted.length === 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>select.innerHTML = `&lt;option value=""&gt;Register a team member first&lt;/option&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>select.innerHTML = sorted.map(emp =&gt;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`&lt;option value="${emp.id}"&gt;${emp.name} (${emp.department})&lt;/option&gt;`</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>).join('');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Calculate and build rankings</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function computeRankings() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const employeeMap = {};</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appState.employees.forEach(emp =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>employeeMap[emp.id] = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>...emp,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>totalSteps: 0,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>logCount: 0</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appState.logs.forEach(log =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (employeeMap[log.employeeId]) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>employeeMap[log.employeeId].totalSteps += parseInt(log.steps);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>employeeMap[log.employeeId].logCount += 1;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return Object.values(employeeMap).sort((a, b) =&gt; b.totalSteps - a.totalSteps);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Render Dashboard Metrics, Leaderboard and Charts</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function renderDashboard() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const rankings = computeRankings();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let totalCompanySteps = 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>rankings.forEach(r =&gt; totalCompanySteps += r.totalSteps);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const leadingEmployee = rankings[0];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const leadingName = leadingEmployee &amp;&amp; leadingEmployee.totalSteps &gt; 0 ? leadingEmployee.name : "Waiting for first step";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const leadingSteps = leadingEmployee ? leadingEmployee.totalSteps.toLocaleString() : "0";</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const totalLogs = appState.logs.length;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const avgSteps = totalLogs &gt; 0 ? Math.round(totalCompanySteps / totalLogs) : 0;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const activeCount = rankings.filter(r =&gt; r.totalSteps &gt; 0).length;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const totalEmployees = appState.employees.length;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('stat-total-steps').innerText = totalCompanySteps.toLocaleString();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('stat-leader-name').innerText = leadingName;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('stat-leader-steps').innerText = leadingSteps;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('stat-average-steps').innerText = avgSteps.toLocaleString();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('stat-active-rate').innerText = `${activeCount} / ${totalEmployees}`;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>renderPodium(rankings.slice(0, 3));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>renderLeaderboard();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>renderLogsList();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>renderAnalyticsChart();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>lucide.createIcons();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function formatDateText(dateStr) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const parts = dateStr.split('-');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (parts.length === 3) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const date = new Date(parts[0], parts[1] - 1, parts[2]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'short' });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return dateStr;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function updateTopDisplayInfo() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const daysRemaining = TOTAL_DAYS_IN_JUNE - CURRENT_DATE_CONTEXT.getDate();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('days-remaining-display').innerText = `${daysRemaining} Days`;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const yr = CURRENT_DATE_CONTEXT.getFullYear();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const mo = String(CURRENT_DATE_CONTEXT.getMonth() + 1).padStart(2, '0');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const dy = String(CURRENT_DATE_CONTEXT.getDate()).padStart(2, '0');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('log-date').value = `${yr}-${mo}-${dy}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Quick template options</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.setQuickSteps = function(num) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('log-steps').value = num;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Open/Close Modals</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.openLogModal = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>populateEmployeeDropdowns();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('logModal').classList.remove('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.closeLogModal = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('logModal').classList.add('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.openAddEmployeeModal = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('addEmployeeModal').classList.remove('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.closeAddEmployeeModal = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('addEmployeeModal').classList.add('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Submit daily logs straight to cloud Firestore</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.submitFootstepLog = async function(e) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>e.preventDefault();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const submitBtn = document.getElementById('btn-submit-log');</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const empId = document.getElementById('log-employee-id').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const logDate = document.getElementById('log-date').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const stepsCount = parseInt(document.getElementById('log-steps').value);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (!empId || !logDate || isNaN(stepsCount) || stepsCount &lt;= 0) return;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>submitBtn.disabled = true;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>submitBtn.innerText = "Saving to Cloud...";</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const randomId = `log_${Date.now()}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'logs', randomId), {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>employeeId: empId,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>date: logDate,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>steps: stepsCount</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>closeLogModal();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>triggerConfettiBurst();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>playSuccessSound();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>showToast("Steps Registered!", "Your footsteps were registered and synced live with everyone.");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('log-steps').value = '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch (err) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>console.error("Firestore Error registering footprints:", err);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} finally {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>submitBtn.disabled = false;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>submitBtn.innerText = "Register Steps Live";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Register new employee to cloud database</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.submitNewEmployee = async function(e) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>e.preventDefault();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const submitBtn = document.getElementById('btn-submit-emp');</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const name = document.getElementById('new-emp-name').value.trim();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const dept = document.getElementById('new-emp-dept').value;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (!name) return;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>submitBtn.disabled = true;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>submitBtn.innerText = "Registering...";</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const empId = `emp_${Date.now()}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'employees', empId), {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>name: name,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>department: dept</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>closeAddEmployeeModal();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>triggerConfettiBurst();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>playSuccessSound();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>showToast("Profile Created!", `${name} has been added to the company challenge roster.`);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('new-emp-name').value = '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch (err) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>console.error("Firestore Error registering employee:", err);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} finally {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>submitBtn.disabled = false;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>submitBtn.innerText = "Register Live";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Delete step log record securely from cloud database</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.deleteLog = function(logId, event) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>event.stopPropagation();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>openConfirmDialog(</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>"Delete Step Log Entry?",<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>"Are you sure you want to delete this recorded entry permanently from the shared workspace?",<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>async () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'logs', logId));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>showToast("Log Removed", "The step log entry has been deleted successfully.");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>} catch (err) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>console.error("Error deleting log entry from Firestore:", err);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Complete deletion of an employee and their corresponding footsteps from the database</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.deleteEmployee = function(empId) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const employee = appState.employees.find(e =&gt; e.id === empId);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (!employee) return;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>openConfirmDialog(</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`Remove ${employee.name}?`,<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`This will permanently delete ${employee.name} and ALL of their corresponding logs from the company challenge. This action cannot be undone.`,<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>async () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>closeProfileModal();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>// 1. Delete associated step logs first</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>const logsToDelete = appState.logs.filter(l =&gt; l.employeeId === empId);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>for (const log of logsToDelete) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'logs', log.id));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>// 2. Delete employee registration document</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'employees', empId));</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>showToast("Employee Removed", `${employee.name} has been removed successfully.`);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>} catch (err) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>console.error("Error removing employee document:", err);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Render Podium layout</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function renderPodium(topThree) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const podiumContainer = document.getElementById('podium-section');</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (appState.employees.length === 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>podiumContainer.innerHTML = '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (topThree.length === 0 || topThree.every(e =&gt; e.totalSteps === 0)) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>podiumContainer.innerHTML = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="text-center p-6 border border-dashed border-slate-800 rounded-xl text-slate-500 text-xs"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>No logs submitted yet for this month. Be the first to start the podium!</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const visualOrder = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (topThree[1]) visualOrder.push({ ...topThree[1], rank: 2 });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (topThree[0]) visualOrder.push({ ...topThree[0], rank: 1 });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (topThree[2]) visualOrder.push({ ...topThree[2], rank: 3 });</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (visualOrder.length === 1) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>visualOrder.unshift({ name: "Unclaimed", totalSteps: 0, rank: 2, department: "-" });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>visualOrder.push({ name: "Unclaimed", totalSteps: 0, rank: 3, department: "-" });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>podiumContainer.innerHTML = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-end justify-center gap-2 sm:gap-4 mt-6 bg-slate-950/40 p-4 rounded-2xl border border-slate-900"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>${renderPodiumCard(visualOrder[0])}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>${renderPodiumCard(visualOrder[1])}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>${visualOrder[2] ? renderPodiumCard(visualOrder[2]) : renderPodiumCard({ name: "Unclaimed", totalSteps: 0, rank: 3, department: "-" })}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function renderPodiumCard(item) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const isFirst = item.rank === 1;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const isUnclaimed = item.name === "Unclaimed";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const initials = isUnclaimed ? "?" : item.name.split(' ').map(n =&gt; n[0]).join('').substring(0, 2);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const scaleClass = isFirst ? 'scale-105 sm:-translate-y-2' : '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const borderGlow = isFirst<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>? 'border-sky-500 shadow-glow shadow-sky-500/25 bg-slate-900/90'<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>: 'border-slate-800 bg-slate-900/60';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const badgeBg = isFirst ? 'bg-sky-500 text-slate-950' : 'bg-slate-800 text-slate-300';</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex-1 flex flex-col items-center text-center p-3 sm:p-4 rounded-xl border ${borderGlow} ${scaleClass} transition-all duration-500"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black ${badgeBg} mb-2.5"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>${item.rank}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full ${isFirst ? 'bg-sky-950 text-sky-400 border-2 border-sky-400/80' : 'bg-slate-800 text-slate-400'} flex items-center justify-center font-extrabold text-sm sm:text-base mb-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>${initials}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-xs font-bold text-white block truncate max-w-[85px] sm:max-w-none" title="${item.name}"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>${item.name}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="text-[9px] text-slate-500 uppercase tracking-wider block"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>${item.department}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="font-mono font-bold text-[10px] sm:text-xs text-sky-400 mt-2 block"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>${item.totalSteps.toLocaleString()} steps</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Render detailed leaderboard lists</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.renderLeaderboard = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const queryVal = document.getElementById('leaderboard-search').value.toLowerCase();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const deptFilter = document.getElementById('leaderboard-dept-filter').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const rankings = computeRankings();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const listContainer = document.getElementById('leaderboard-list');</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (appState.employees.length === 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>listContainer.innerHTML = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="text-center py-12 px-4 border border-dashed border-slate-800 rounded-2xl"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="w-12 h-12 rounded-xl bg-sky-950/50 border border-sky-800/30 flex items-center justify-center text-sky-400 mx-auto mb-3"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;i data-lucide="users" class="w-6 h-6 animate-pulse"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;h4 class="text-xs font-bold text-white mb-1 uppercase tracking-wider"&gt; Roster Empty&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p class="text-xs text-slate-500 mb-4 max-w-[240px] mx-auto"&gt;Create team member profiles to get your workplace challenge rolling!&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;button onclick="openAddEmployeeModal()" class="inline-flex items-center gap-1.5 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-glow shadow-sky-500/10"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;i data-lucide="user-plus" class="w-4 h-4"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>Add First Team Member</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const filtered = rankings.filter(emp =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const matchesSearch = emp.name.toLowerCase().includes(queryVal);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const matchesDept = deptFilter === 'All' || emp.department === deptFilter;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return matchesSearch &amp;&amp; matchesDept;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (filtered.length === 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>listContainer.innerHTML = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="text-center py-8 text-slate-500 text-xs"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>No employees match your search criteria.</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const maxSteps = rankings[0]?.totalSteps || 1;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>listContainer.innerHTML = filtered.map((emp, index) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const rankNum = rankings.findIndex(r =&gt; r.id === emp.id) + 1;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const percentageOfLeader = Math.min(100, Math.round((emp.totalSteps / maxSteps) * 100));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const initials = emp.name.split(' ').map(n =&gt; n[0]).join('').substring(0, 2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const rankIndicatorColor = rankNum === 1 ? 'text-sky-400' : rankNum &lt;= 3 ? 'text-cyan-400/85' : 'text-slate-500';</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div onclick="openProfileModal('${emp.id}')" class="flex items-center justify-between p-3 rounded-xl bg-slate-900/40 hover:bg-slate-900 border border-slate-800/80 hover:border-slate-700 transition-all cursor-pointer group"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="flex items-center space-x-3 min-w-0 flex-1"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span class="font-mono font-extrabold w-5 text-center ${rankIndicatorColor} text-xs sm:text-sm"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>${rankNum}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-slate-850 text-slate-300 font-bold text-xs flex items-center justify-center group-hover:border group-hover:border-sky-500/50 group-hover:text-sky-400 transition-all"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>${initials}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="min-w-0 flex-1 pr-3"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div class="flex items-center gap-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;h4 class="text-xs sm:text-sm font-bold text-white group-hover:text-sky-400 truncate transition-all"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>${emp.name}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;span class="hidden sm:inline-block text-[9px] text-slate-400 px-1.5 py-0.5 rounded-md bg-slate-950 border border-slate-800"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>${emp.department}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div class="w-full bg-slate-950 h-1 rounded-full mt-2 overflow-hidden"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div class="bg-sky-500 h-1 rounded-full transition-all duration-1000" style="width: ${percentageOfLeader}%"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="text-right pl-2 shrink-0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span class="font-mono font-extrabold text-white text-xs sm:text-sm block"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>${emp.totalSteps.toLocaleString()}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span class="text-[9px] text-slate-500 uppercase tracking-widest block font-medium"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>steps</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}).join('');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Render Recent Logs Feed</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function renderLogsList() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const feedContainer = document.getElementById('recent-logs-list');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('total-logs-count').innerText = `${appState.logs.length} Logs`;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (appState.logs.length === 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>feedContainer.innerHTML = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="text-center py-10 text-slate-500 text-xs border border-slate-800 border-dashed rounded-xl"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>No footprints registered yet. Get moving and log steps!</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>feedContainer.innerHTML = appState.logs.map(log =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const employee = appState.employees.find(emp =&gt; emp.id === log.employeeId) || { name: 'Unknown Walker', department: 'Staff' };</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const initials = employee.name.split(' ').map(n =&gt; n[0]).join('').substring(0, 2);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/20 border border-slate-900/60 hover:bg-slate-900/50 transition-all"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="flex items-center space-x-3"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="w-8 h-8 rounded-lg bg-slate-950 text-slate-400 border border-slate-800 text-xs flex items-center justify-center font-semibold"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>${initials}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;h5 class="text-xs font-bold text-white"&gt;${employee.name}&lt;/h5&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;p class="text-[10px] text-slate-500 flex items-center gap-1"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;span&gt;${employee.department}&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;span class="w-1 h-1 rounded-full bg-slate-700"&gt;&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;span&gt;${formatDateText(log.date)}&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="flex items-center space-x-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span class="font-mono text-xs font-bold text-sky-400 bg-sky-950/50 border border-sky-900/30 px-2 py-1 rounded-md"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>+${parseInt(log.steps).toLocaleString()}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;button onclick="deleteLog('${log.id}', event)" class="text-slate-600 hover:text-red-400 p-1 rounded hover:bg-slate-850 transition-all" title="Delete Log"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;i data-lucide="trash-2" class="w-3.5 h-3.5"&gt;&lt;/i&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}).join('');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Open personal history profile modal</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.openProfileModal = function(empId) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const employee = appState.employees.find(e =&gt; e.id === empId);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (!employee) return;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const personalLogs = appState.logs.filter(l =&gt; l.employeeId === empId);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const totalSteps = personalLogs.reduce((sum, current) =&gt; sum + parseInt(current.steps), 0);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const averageSteps = personalLogs.length &gt; 0 ? Math.round(totalSteps / personalLogs.length) : 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const initials = employee.name.split(' ').map(n =&gt; n[0]).join('').substring(0, 2);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('profile-avatar-badge').innerText = initials;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('profile-name').innerText = employee.name;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('profile-dept').innerText = employee.department;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('profile-stat-total').innerText = totalSteps.toLocaleString();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('profile-stat-days').innerText = personalLogs.length;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('profile-stat-avg').innerText = averageSteps.toLocaleString();</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const profileLogsList = document.getElementById('profile-logs-list');</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (personalLogs.length === 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>profileLogsList.innerHTML = `&lt;div class="text-center py-6 text-slate-500 text-xs"&gt;No logs submitted this month yet.&lt;/div&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>profileLogsList.innerHTML = personalLogs.map(log =&gt; `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="text-slate-400 font-medium"&gt;${formatDateText(log.date)}&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="font-mono font-bold text-sky-400 bg-sky-950/40 px-2 py-0.5 border border-sky-900/30 rounded"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>${parseInt(log.steps).toLocaleString()} steps</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`).join('');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Bind the employee-deletion trigger to this active profile context</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const deleteBtn = document.getElementById('btn-delete-employee');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (deleteBtn) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const newDeleteBtn = deleteBtn.cloneNode(true);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>deleteBtn.parentNode.replaceChild(newDeleteBtn, deleteBtn);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>newDeleteBtn.addEventListener('click', () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>deleteEmployee(empId);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('profileModal').classList.remove('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>lucide.createIcons();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.closeProfileModal = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('profileModal').classList.add('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.toggleChartType = function(type) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appState.currentChartType = type;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const btnTrend = document.getElementById('btn-chart-trend');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const btnDept = document.getElementById('btn-chart-dept');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (type === 'trend') {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>btnTrend.className = "px-3 py-1.5 rounded-lg font-medium bg-sky-500 text-slate-950 font-semibold transition-all";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>btnDept.className = "px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-white transition-all";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>btnDept.className = "px-3 py-1.5 rounded-lg font-medium bg-sky-500 text-slate-950 font-semibold transition-all";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>btnTrend.className = "px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-white transition-all";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>renderAnalyticsChart();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Main Visual Chart Generator using Chart.js</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function renderAnalyticsChart() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const ctx = document.getElementById('strideAnalyticsChart').getContext('2d');</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (appState.chartInstance) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appState.chartInstance.destroy();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (appState.currentChartType === 'trend') {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const last8Days = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>for (let i = 7; i &gt;= 0; i--) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const d = new Date(CURRENT_DATE_CONTEXT);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>d.setDate(CURRENT_DATE_CONTEXT.getDate() - i);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const yr = d.getFullYear();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const mo = String(d.getMonth() + 1).padStart(2, '0');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const dy = String(d.getDate()).padStart(2, '0');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>last8Days.push(`${yr}-${mo}-${dy}`);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const dailySum = last8Days.map(dateStr =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>return appState.logs</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>.filter(l =&gt; l.date === dateStr)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>.reduce((sum, log) =&gt; sum + parseInt(log.steps), 0);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const labels = last8Days.map(dateStr =&gt; formatDateText(dateStr));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const gradient = ctx.createLinearGradient(0, 0, 0, 300);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>gradient.addColorStop(0, 'rgba(14, 165, 233, 0.45)');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>gradient.addColorStop(1, 'rgba(14, 165, 233, 0.00)');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appState.chartInstance = new Chart(ctx, {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>type: 'line',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>data: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>labels: labels,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>datasets: [{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>label: 'Company Steps Trend',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>data: dailySum,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>borderColor: '#38bdf8',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>borderWidth: 3,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>backgroundColor: gradient,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>fill: true,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>tension: 0.35,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>pointBackgroundColor: '#ffffff',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>pointHoverBackgroundColor: '#38bdf8',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>pointHoverRadius: 6,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>pointRadius: 4</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>}]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>options: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>responsive: true,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>maintainAspectRatio: false,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>plugins: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>legend: { display: false },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>tooltip: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>padding: 10,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>backgroundColor: '#090d16',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>titleColor: '#94a3b8',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>bodyColor: '#ffffff',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>borderColor: '#1e293b',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>borderWidth: 1,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>bodyFont: { family: 'Inter', weight: 'bold' },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>titleFont: { family: 'Inter' }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>scales: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>y: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>grid: { color: 'rgba(30, 41, 59, 0.4)' },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>ticks: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>color: '#94a3b8',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>font: { family: 'JetBrains Mono', size: 10 }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>x: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>grid: { display: false },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>ticks: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>color: '#94a3b8',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>font: { family: 'Inter', size: 10 }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const deptMap = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>"Engineering": 0, "Design": 0, "Product": 0, "Marketing": 0, "Sales": 0, "HR": 0, "Finance": 0</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appState.logs.forEach(log =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const employee = appState.employees.find(e =&gt; e.id === log.employeeId);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (employee &amp;&amp; deptMap[employee.department] !== undefined) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>deptMap[employee.department] += parseInt(log.steps);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const deptLabels = Object.keys(deptMap);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const deptData = Object.values(deptMap);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appState.chartInstance = new Chart(ctx, {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>type: 'doughnut',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>data: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>labels: deptLabels,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>datasets: [{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>data: deptData,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>backgroundColor: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>'#0ea5e9', '#38bdf8', '#0284c7', '#0369a1', '#0c4a6e', '#075985', '#0284c7'</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>borderColor: '#030712',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>borderWidth: 2,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>hoverOffset: 8</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>}]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>options: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>responsive: true,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>maintainAspectRatio: false,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>plugins: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>legend: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>position: 'right',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>labels: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>color: '#94a3b8',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>font: { family: 'Inter', size: 11 },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>boxWidth: 12</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>tooltip: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>padding: 10,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>backgroundColor: '#090d16',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>borderColor: '#1e293b',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>borderWidth: 1,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>bodyFont: { family: 'Inter', weight: 'bold' }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>cutout: '65%'</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Entry bootloader</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.addEventListener('DOMContentLoaded', async () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>await authenticateUser();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>await seedDatabaseIfEmpty();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>listenToRealTimeDatabase();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+</body>
+</html>
